@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d540ee6d43e320c49a4486e616eb4865, type: 3}
+  m_Name: Test
+  m_EditorClassIdentifier: Assembly-CSharp:RPG.Core.Character:StatBlockDefinition
+  attributes:
+  - attributeName: Strength
+    type: Primary
+    value: 10
+    currentValue: -1
+    relationship: 
+  - attributeName: Wisdom
+    type: Primary
+    value: 10
+    currentValue: -1
+    relationship: 
+  - attributeName: Determination
+    type: Secondary
+    value: 0
+    currentValue: -1
+    relationship: ([Strength]*3)+([Wisdom]*2)
+  - attributeName: Essence
+    type: Resource
+    value: 100
+    currentValue: -1
+    relationship: '[Wisdom]*2'
+  - attributeName: Health
+    type: Vital
+    value: 100
+    currentValue: -1
+    relationship: '[Wisdom]*2'
+  - attributeName: Vigor
+    type: Vital
+    value: 100
+    currentValue: -1
+    relationship: '[Wisdom]*2'
+  - attributeName: Level
+    type: Level
+    value: 1
+    currentValue: -1
+    relationship: '[Wisdom]*2'

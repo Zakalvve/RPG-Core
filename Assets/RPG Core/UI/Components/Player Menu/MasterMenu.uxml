@@ -1,0 +1,19 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Template name="CharacterSheet" src="project://database/Assets/RPG%20Core/UI/Components/Player%20Menu/Character%20Sheet/CharacterSheet.uxml?fileID=9197481963319205126&amp;guid=a2f7352b77cefc4458f65385424f884d&amp;type=3#CharacterSheet" />
+    <Style src="project://database/Assets/RPG%20Core/UI/UI%20Core/UI_Theme.uss?fileID=7433441132597879392&amp;guid=b49d28b40690a724499afd803e152a88&amp;type=3#UserUI" />
+    <RPG.Core.UI.UI_Panel name="master-menu" class="window character-window character-sheet" style="height: auto; width: auto; max-width: initial; max-height: initial; min-width: initial; min-height: initial;">
+        <ui:VisualElement name="title-bar" class="background-primary title-bar border-primary">
+            <ui:VisualElement name="title-bar-content" class="container content">
+                <ui:VisualElement name="title" class="title-bar-title text-secondary">
+                    <ui:Label text="Character" display-tooltip-when-elided="false" name="title-text" class="title-text" style="flex-grow: 1;" />
+                </ui:VisualElement>
+                <ui:VisualElement name="title-bar-controls" class="title-bar-controls" style="color: rgb(255, 255, 255); align-items: center;">
+                    <ui:Label text="0000000000g" display-tooltip-when-elided="true" name="currency" class="text text-secondary" style="margin-top: 0; margin-right: 16px; margin-bottom: 0; margin-left: 0;" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="body" class="flex-grow">
+            <ui:Instance template="CharacterSheet" name="CharacterSheet" class="flex-grow" />
+        </ui:VisualElement>
+    </RPG.Core.UI.UI_Panel>
+</ui:UXML>

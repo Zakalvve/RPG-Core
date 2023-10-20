@@ -1,0 +1,8 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/RPG%20Core/UI/UI%20Core/UI_Theme.uss?fileID=7433441132597879392&amp;guid=b49d28b40690a724499afd803e152a88&amp;type=3#UI_Theme" />
+    <ui:VisualElement name="unit-frame-root" class="portrait-ar" style="background-image: url(&apos;project://database/Assets/RPG%20Core/Sprites/Character/Portraits/Sinclair-800x1000.png?fileID=2800000&amp;guid=f1ac51c466224b640b2d093e4b4a2d98&amp;type=3#Sinclair-800x1000&apos;);">
+        <ui:VisualElement name="frame-container" class="stretch-to-parent-size" style="flex-grow: 1; align-self: auto; align-items: center; justify-content: flex-end;">
+            <RPG.Core.UI.Components.UnitFrames.UI_ResourceBar name="health-bar" current="97" max="112" value="26" max-value="100" text-display-type="Raw" width="100" text-size="100" height="100" style="flex-grow: 1; height: 16%; flex-direction: column-reverse;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

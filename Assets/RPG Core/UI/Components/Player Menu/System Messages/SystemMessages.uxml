@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/RPG%20Core/UI/UI%20Core/UI_Theme.uss?fileID=7433441132597879392&amp;guid=b49d28b40690a724499afd803e152a88&amp;type=3#UI_Theme" />
+    <ui:VisualElement name="system-messages-root" picking-mode="Ignore" style="flex-grow: 0; flex-direction: column-reverse; width: 100%; height: 100%; top: auto;">
+        <ui:Label tabindex="-1" parse-escape-sequences="true" display-tooltip-when-elided="true" name="system-messages" enable-rich-text="true" picking-mode="Ignore" class="system-message" />
+    </ui:VisualElement>
+</ui:UXML>

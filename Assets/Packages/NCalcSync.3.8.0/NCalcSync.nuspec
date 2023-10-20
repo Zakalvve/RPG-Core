@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>NCalcSync</id>
+    <version>3.8.0</version>
+    <authors>Sebastien Ros and contributors</authors>
+    <license type="expression">MIT</license>
+    <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>
+    <icon>NCalc.png</icon>
+    <projectUrl>https://github.com/ncalc/ncalc</projectUrl>
+    <description>NCalc is a mathematical expressions evaluator in .NET. NCalc can parse any expression and evaluate the result, including static or dynamic parameters and custom functions. This version targets .NET Standard 2.0 framework.</description>
+    <copyright>Sebastien Ros and contributors</copyright>
+    <tags>ncalc sync core</tags>
+    <repository url="https://github.com/ncalc/ncalc.git" />
+    <dependencies>
+      <group targetFramework=".NETFramework4.6.1">
+        <dependency id="Antlr4.Runtime.Standard" version="4.12.0" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework="net5.0">
+        <dependency id="Antlr4.Runtime.Standard" version="4.12.0" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="Antlr4.Runtime.Standard" version="4.12.0" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>

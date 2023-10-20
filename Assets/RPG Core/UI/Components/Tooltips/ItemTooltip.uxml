@@ -1,0 +1,14 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/RPG%20Core/UI/UI%20Core/UI_Theme.uss?fileID=7433441132597879392&amp;guid=b49d28b40690a724499afd803e152a88&amp;type=3#UserUI" />
+    <ui:VisualElement name="tooltip" picking-mode="Ignore" class="tooltip">
+        <ui:VisualElement name="container" picking-mode="Ignore" class="border border-secondary container">
+            <ui:Label tabindex="-1" text="Thas&apos;dorah, Legacy of the Windrunners" parse-escape-sequences="true" display-tooltip-when-elided="true" name="name" picking-mode="Ignore" class="text text-secondary text-bold m-0 py-1 text-wrap" />
+            <ui:Label tabindex="-1" text="Consumable" parse-escape-sequences="true" display-tooltip-when-elided="true" name="type" picking-mode="Ignore" class="text text-sm text-white p-0 m-0 text-wrap" />
+            <ui:VisualElement name="stats" picking-mode="Ignore" class="text-green stats text-wrap">
+                <ui:Label tabindex="-1" text="+100 HP" parse-escape-sequences="true" display-tooltip-when-elided="true" picking-mode="Ignore" />
+                <ui:Label tabindex="-1" text="+2 Strength, Duration: 1 Round" parse-escape-sequences="true" display-tooltip-when-elided="true" picking-mode="Ignore" />
+            </ui:VisualElement>
+            <ui:Label tabindex="-1" text="Always useful to have one of these at hand in a pinch. Some say that these are made from the ground bones of" parse-escape-sequences="true" display-tooltip-when-elided="true" name="description" picking-mode="Ignore" class="text text-sm text-white m-0 p-0 text-wrap" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

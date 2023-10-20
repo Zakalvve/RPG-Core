@@ -1,0 +1,26 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Template name="CharacterSheet" src="project://database/Assets/RPG%20Core/UI/Components/Player%20Menu/MasterMenu.uxml?fileID=9197481963319205126&amp;guid=d48a869723a43694ba4835866e00d072&amp;type=3#MasterMenu" />
+    <ui:Template name="SystemMessages" src="project://database/Assets/RPG%20Core/UI/Components/Player%20Menu/System%20Messages/SystemMessages.uxml?fileID=9197481963319205126&amp;guid=06c68eb3d3d579c46867448f81fbeccf&amp;type=3#SystemMessages" />
+    <Style src="project://database/Assets/RPG%20Core/UI/UI%20Core/UI_Theme.uss?fileID=7433441132597879392&amp;guid=b49d28b40690a724499afd803e152a88&amp;type=3#UI_Theme" />
+    <ui:VisualElement name="root" style="flex-grow: 1; align-items: center; justify-content: center;">
+        <ui:VisualElement name="action-bar" class="background" style="flex-grow: 0; flex-direction: column; flex-wrap: nowrap; position: absolute; width: auto; bottom: 0; height: auto; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; padding-top: 5px; padding-right: 0; padding-bottom: 5px; padding-left: 0; min-width: auto; min-height: auto;">
+            <ui:VisualElement name="action-bar-root" class="border-secondary" style="flex-grow: 0; margin-top: 3px; margin-right: 3px; margin-bottom: 3px; margin-left: 3px; flex-direction: row; flex-wrap: wrap; padding-top: 0; padding-right: 0; padding-bottom: 4px; padding-left: 0; justify-content: center; border-top-width: 0; border-right-width: 0; border-bottom-width: 1px; border-left-width: 0;">
+                <InventorySystem.UI_BaseInventorySlot />
+                <InventorySystem.UI_BaseInventorySlot />
+                <InventorySystem.UI_BaseInventorySlot />
+                <InventorySystem.UI_BaseInventorySlot />
+                <InventorySystem.UI_BaseInventorySlot />
+                <InventorySystem.UI_BaseInventorySlot />
+                <InventorySystem.UI_BaseInventorySlot />
+                <InventorySystem.UI_BaseInventorySlot />
+                <InventorySystem.UI_BaseInventorySlot />
+                <InventorySystem.UI_BaseInventorySlot />
+                <InventorySystem.UI_BaseInventorySlot />
+                <InventorySystem.UI_BaseInventorySlot />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:Instance template="CharacterSheet" name="MasterMenu" style="width: 80%; flex-grow: 0; height: 83%; top: -22px;" />
+        <RPG.Core.UI.Components.UnitFrames.UI_PartyFrame name="party-frame" style="top: 300px;" />
+        <ui:Instance template="SystemMessages" name="SystemMessages" picking-mode="Ignore" style="position: absolute; width: 1394px; top: 209px;" />
+    </ui:VisualElement>
+</ui:UXML>

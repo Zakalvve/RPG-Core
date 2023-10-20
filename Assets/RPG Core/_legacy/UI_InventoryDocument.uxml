@@ -1,0 +1,32 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/RPG%20Core/UI/Inventory/UI_InventorySlot.uss?fileID=7433441132597879392&amp;guid=511031779602fe841a2cadfa211c15c2&amp;type=3#UI_InventorySlot" />
+    <ui:VisualElement name="Container" style="flex-grow: 1; align-items: center; justify-content: center;">
+        <ui:VisualElement name="EquipmentWindowTest" class="window" style="top: 20px; width: 48%; height: 73%; left: 20px;">
+            <ui:Label tabindex="-1" text="Equipment" parse-escape-sequences="false" display-tooltip-when-elided="true" name="Header" class="title-bar" />
+            <ui:VisualElement name="Equipment" class="inventory-root" style="flex-grow: 1; flex-direction: row; flex-wrap: wrap; justify-content: center; background-color: rgba(166, 166, 166, 0);">
+                <ui:VisualElement name="left" style="flex-grow: 1; align-items: auto;">
+                    <ui:VisualElement name="head" style="flex-grow: 1; flex-basis: 25%; align-items: center; align-self: auto; flex-wrap: wrap; justify-content: space-between; max-width: 100%; max-height: 25%; width: 100%; height: 25%;" />
+                    <ui:VisualElement name="chest" style="flex-grow: 1; flex-basis: 25%; align-items: center; align-self: auto; flex-wrap: wrap; justify-content: space-between; max-width: 100%; max-height: 25%; width: 100%; height: 25%;" />
+                    <ui:VisualElement name="gloves" style="flex-grow: 1; flex-basis: 25%; align-items: center; align-self: auto; flex-wrap: wrap; justify-content: space-between; max-width: 100%; max-height: 25%; width: 100%; height: 25%;" />
+                    <ui:VisualElement name="legs" style="flex-grow: 1; flex-basis: 25%; align-items: center; align-self: auto; flex-wrap: wrap; justify-content: space-between; max-width: 100%; max-height: 25%; width: 100%; height: 25%;" />
+                </ui:VisualElement>
+                <ui:VisualElement name="center" style="flex-grow: 3;" />
+                <ui:VisualElement name="left" style="flex-grow: 1; align-items: auto;">
+                    <ui:VisualElement name="belt" style="flex-grow: 1; flex-basis: 25%; align-items: center; align-self: auto; flex-wrap: wrap; justify-content: space-between; max-width: 100%; max-height: 25%; width: 100%; height: 25%;" />
+                    <ui:VisualElement name="feet" style="flex-grow: 1; flex-basis: 25%; align-items: center; align-self: auto; flex-wrap: wrap; justify-content: space-between; max-width: 100%; max-height: 25%; width: 100%; height: 25%;" />
+                    <ui:VisualElement name="main_hand" style="flex-grow: 1; flex-basis: 25%; align-items: center; align-self: auto; flex-wrap: wrap; justify-content: space-between; max-width: 100%; max-height: 25%; width: 100%; height: 25%;" />
+                    <ui:VisualElement name="off_hand" style="flex-grow: 1; flex-basis: 25%; align-items: center; align-self: auto; flex-wrap: wrap; justify-content: space-between; max-width: 100%; max-height: 25%; width: 100%; height: 25%;" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="InventoryWindowTest" class="window" style="flex-grow: 1; flex-direction: column; flex-wrap: wrap; align-self: center; position: absolute; width: 48%; height: 75%; top: 20px; left: 980px; right: 20px; bottom: auto; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; background-color: rgb(28, 32, 36); min-width: auto; min-height: auto; transform-origin: center; display: flex; max-height: 80%; max-width: 60%; border-top-color: rgb(255, 197, 0); border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0;">
+            <ui:Label tabindex="-1" text="Inventory" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Header" class="title-bar" style="font-size: 24px; color: rgb(255, 197, 0); margin-top: 0; margin-right: 0; margin-bottom: 10px; margin-left: 0; border-left-color: rgb(64, 74, 82); border-right-color: rgb(64, 74, 82); border-top-color: rgb(255, 197, 0); border-bottom-color: rgb(64, 74, 82); border-bottom-width: 1px; flex-direction: column;" />
+            <ui:VisualElement name="Inventory" style="flex-grow: 1; flex-direction: row; flex-wrap: wrap; justify-content: center; max-width: none; height: auto; width: 100%; padding-top: 0;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="ActionBarTest" class="window" style="flex-grow: 1; flex-direction: column; flex-wrap: wrap; align-self: center; position: absolute; width: 80%; height: 15%; top: 849px; left: 174px; right: auto; bottom: auto; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; background-color: rgb(28, 32, 36); min-width: auto; min-height: auto; transform-origin: center; display: flex; max-height: 75%; max-width: 80%; border-top-color: rgb(255, 197, 0); border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0;">
+            <ui:VisualElement name="ActionBar" style="flex-grow: 1; flex-direction: row; flex-wrap: wrap; justify-content: center;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <InventorySystem.UI_BaseInventorySlot name="GhostIcon" class="ghost-icon" />
+    <ui:Label tabindex="-1" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ErrorMessage" picking-mode="Ignore" style="position: absolute; width: 100%; align-items: auto; -unity-text-align: middle-center; top: 225px; font-size: 50px; color: rgb(255, 0, 0); -unity-text-outline-width: 1px; -unity-text-outline-color: rgb(0, 0, 0); -unity-font-style: bold;" />
+</ui:UXML>

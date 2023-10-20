@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>Ardalis.SmartEnum</id>
+    <version>2.1.0</version>
+    <title>Ardalis.SmartEnum</title>
+    <authors>Steve Smith (@ardalis)</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <icon>icon.png</icon>
+    <projectUrl>https://github.com/ardalis/SmartEnum</projectUrl>
+    <iconUrl>https://user-images.githubusercontent.com/782127/33497760-facf6550-d69c-11e7-94e4-b3856da259a9.png</iconUrl>
+    <description>Classes to help produce strongly typed smarter enums in .NET.</description>
+    <releaseNotes>Many minor fixes and upgrades to dependent packages. Consolidating all dependent packages to this version.</releaseNotes>
+    <tags>enum</tags>
+    <repository type="git" url="https://github.com/ardalis/SmartEnum" commit="08770d78d376a384c5df94460290f1687b24579f" />
+    <dependencies>
+      <group targetFramework=".NETStandard2.0" />
+    </dependencies>
+  </metadata>
+</package>

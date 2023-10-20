@@ -1,0 +1,11 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/RPG%20Core/UI/UI%20Core/UI_Theme.uss?fileID=7433441132597879392&amp;guid=b49d28b40690a724499afd803e152a88&amp;type=3#UI_Theme" />
+    <ui:VisualElement name="resource-bar-root" style="width: 300px; height: 60px; background-color: rgba(0, 0, 0, 0); -unity-text-align: upper-right; flex-direction: column; flex-grow: 1;">
+        <ui:Label tabindex="-1" text="100/100" parse-escape-sequences="false" display-tooltip-when-elided="true" name="resource-text" style="font-size: 20%; -unity-text-outline-color: rgb(0, 0, 0); color: rgb(255, 255, 255); text-shadow: 2px 1px 2px rgb(0, 0, 0); flex-shrink: 1; flex-grow: 5; -unity-text-align: lower-right;" />
+        <ui:VisualElement name="background" style="flex-grow: 0.2; background-color: rgb(48, 12, 12); overflow: hidden; padding-top: 1px; padding-right: 1px; padding-bottom: 1px; padding-left: 1px; min-height: 7px;">
+            <ui:VisualElement name="foreground" style="flex-grow: 1; background-color: rgb(255, 0, 0); transform-origin: left bottom;">
+                <ui:VisualElement name="overlay" style="flex-grow: 1; background-image: url(&apos;project://database/Assets/RPG%20Core/Sprites/UI/ResourceBarShadeGradient.png?fileID=2800000&amp;guid=0405297e40dccde44bc951ab3b7b4cf5&amp;type=3#ResourceBarShadeGradient&apos;); flex-shrink: 0;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

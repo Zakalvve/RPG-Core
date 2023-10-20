@@ -1,0 +1,189 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/RPG%20Core/UI/UI_Theme.uss?fileID=7433441132597879392&amp;guid=b49d28b40690a724499afd803e152a88&amp;type=3#UI_Theme" />
+    <ui:VisualElement name="character-sheet-root" class="content container flex-grow" style="flex-grow: 0; flex-direction: row; flex-shrink: 1;">
+        <ui:VisualElement name="left-panel" class="layout-panel-left" style="flex-grow: 1;">
+            <ui:Label text="Character Name" display-tooltip-when-elided="true" name="char-name" enable-rich-text="true" class="text-secondary text text-lg char-name" />
+            <ui:IMGUIContainer name="char-portrait" class="char-portrait" />
+            <ui:VisualElement name="char-stats" class="flex-grow">
+                <ui:VisualElement name="char-vitals" class="char-sheet-text-container stat-set" style="flex-grow: 1; justify-content: space-around;">
+                    <ui:Label text="Health: 0/0" display-tooltip-when-elided="true" name="char-health" class="char-sheet-basic-text m-0 p-0" />
+                </ui:VisualElement>
+                <ui:VisualElement name="char-offence" class="char-sheet-text-container stat-set" style="flex-grow: 4; justify-content: space-around;">
+                    <ui:Label text="Damage: 0-0" display-tooltip-when-elided="true" name="char-damage" class="char-sheet-basic-text m-0 p-0" />
+                    <ui:Label text="Crit Chance: 0%" display-tooltip-when-elided="true" name="char-crit" enable-rich-text="false" class="char-sheet-basic-text m-0 p-0" />
+                    <ui:Label text="Miss Chance: 0%" display-tooltip-when-elided="true" name="char-miss" enable-rich-text="false" class="char-sheet-basic-text m-0 p-0" />
+                    <ui:Label text="Graze Chance: 0%" display-tooltip-when-elided="true" name="char-graze" enable-rich-text="false" class="char-sheet-basic-text m-0 p-0" />
+                </ui:VisualElement>
+                <ui:VisualElement name="char-defence" class="char-sheet-text-container stat-set" style="flex-grow: 6; justify-content: space-around;">
+                    <ui:Label text="Damage Resistance: 0-0" display-tooltip-when-elided="true" name="char-dr" class="char-sheet-basic-text m-0 p-0" />
+                    <ui:Label text="Block Chance: 0%" display-tooltip-when-elided="true" name="char-block" class="char-sheet-basic-text m-0 p-0" />
+                    <ui:Label text="Deflection: 0%" display-tooltip-when-elided="true" name="char-deflection" class="char-sheet-basic-text m-0 p-0" />
+                    <ui:Label text="Reflex: 0%" display-tooltip-when-elided="true" name="char-reflex" class="char-sheet-basic-text m-0 p-0" />
+                    <ui:Label text="Fortitude: 0%" display-tooltip-when-elided="true" name="char-fortitude" class="char-sheet-basic-text m-0 p-0" />
+                    <ui:Label text="Will: 0%" display-tooltip-when-elided="true" name="char-will" class="char-sheet-basic-text m-0 p-0" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="mid-panel" class="layout-panel-mid">
+            <ui:VisualElement name="char-selector" class="border-b border-primary character-selector" />
+            <ui:VisualElement name="equipment" class="flex-row flex-grow">
+                <ui:VisualElement name="char-equip-left" class="char-equip-left justify-center">
+                    <InventorySystem.UI_BaseInventorySlot name="head" style="margin-bottom: 3%;" />
+                    <InventorySystem.UI_BaseInventorySlot name="shoulders" style="margin-bottom: 3%;" />
+                    <InventorySystem.UI_BaseInventorySlot name="chest" style="margin-bottom: 3%;" />
+                    <InventorySystem.UI_BaseInventorySlot name="wrist" style="margin-bottom: 3%;" />
+                    <InventorySystem.UI_BaseInventorySlot name="hands" style="margin-bottom: 3%;" />
+                    <InventorySystem.UI_BaseInventorySlot name="waist" style="margin-bottom: 3%;" />
+                </ui:VisualElement>
+                <ui:VisualElement name="char-equip-center" class="char-equip-center" />
+                <ui:VisualElement name="char-equip-right" class="char-equip-right justify-center">
+                    <InventorySystem.UI_BaseInventorySlot name="legs" style="margin-bottom: 3%;" />
+                    <InventorySystem.UI_BaseInventorySlot name="feet" style="margin-bottom: 3%;" />
+                    <InventorySystem.UI_BaseInventorySlot name="neck" style="margin-bottom: 3%;" />
+                    <InventorySystem.UI_BaseInventorySlot name="cloak" style="margin-bottom: 3%;" />
+                    <InventorySystem.UI_BaseInventorySlot name="ring" style="margin-bottom: 3%;" />
+                    <InventorySystem.UI_BaseInventorySlot name="trinket" style="margin-bottom: 3%;" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="right-panel" class="layout-panel-right flex-grow flex-shrink">
+            <ui:VisualElement name="char-weapon-sets">
+                <ui:Label text="Weapon Sets" display-tooltip-when-elided="true" name="weapon-sets-label" class="text-secondary text" />
+                <ui:VisualElement name="weapon-sets-container" style="flex-direction: row; flex-grow: 0; height: auto;">
+                    <ui:VisualElement name="set0" class="inventory-row" style="justify-content: space-around; flex-grow: 1; flex-direction: column;">
+                        <ui:VisualElement name="weapon-sets-container-0" class="inventory-row" style="justify-content: space-around;">
+                            <InventorySystem.UI_BaseInventorySlot name="weapon-main_hand-0" style="width: 46%; padding-top: 46%; margin-bottom: 4%;" />
+                            <InventorySystem.UI_BaseInventorySlot name="weapon-off_hand-0" style="width: 46%; padding-top: 46%; margin-bottom: 4%;" />
+                        </ui:VisualElement>
+                        <ui:Button text="1" parse-escape-sequences="false" display-tooltip-when-elided="true" name="btn-set-0" style="align-items: center; flex-shrink: 1; justify-content: center; align-self: center; background-color: rgba(188, 188, 188, 0); color: rgb(255, 255, 255); border-top-left-radius: 100%; border-top-right-radius: 100%; border-bottom-right-radius: 100%; border-bottom-left-radius: 100%; width: 30px; height: 30px; margin-bottom: 10px;" />
+                    </ui:VisualElement>
+                    <ui:VisualElement name="set1" class="inventory-row" style="justify-content: space-around; flex-grow: 1; flex-direction: column;">
+                        <ui:VisualElement name="weapon-sets-container-1" style="flex-grow: 1; flex-direction: row; flex-wrap: wrap; justify-content: space-around;">
+                            <InventorySystem.UI_BaseInventorySlot name="weapon-main_hand-1" style="width: 46%; padding-top: 46%; margin-bottom: 4%;" />
+                            <InventorySystem.UI_BaseInventorySlot name="weapon-off_hand-1" style="width: 46%; padding-top: 46%; margin-bottom: 4%;" />
+                        </ui:VisualElement>
+                        <ui:Button text="2" parse-escape-sequences="true" display-tooltip-when-elided="true" name="btn-set-1" enable-rich-text="false" style="align-items: center; flex-shrink: 1; justify-content: center; align-self: center; background-color: rgba(188, 188, 188, 0); color: rgb(255, 255, 255); border-top-left-radius: 100%; border-top-right-radius: 100%; border-bottom-right-radius: 100%; border-bottom-left-radius: 100%; width: 30px; height: 30px; margin-bottom: 10px;" />
+                    </ui:VisualElement>
+                    <ui:VisualElement name="set2" class="inventory-row" style="justify-content: space-around; flex-grow: 1; flex-direction: column;">
+                        <ui:VisualElement name="weapon-sets-container-2" style="flex-grow: 1; flex-direction: row; flex-wrap: wrap; justify-content: space-around;">
+                            <InventorySystem.UI_BaseInventorySlot name="weapon-main_hand-2" style="width: 46%; padding-top: 46%; margin-bottom: 4%;" />
+                            <InventorySystem.UI_BaseInventorySlot name="weapon-off_hand-2" style="width: 46%; padding-top: 46%; margin-bottom: 4%;" />
+                        </ui:VisualElement>
+                        <ui:Button text="3" parse-escape-sequences="false" display-tooltip-when-elided="true" name="btn-set-2" style="align-items: center; flex-shrink: 1; justify-content: center; align-self: center; background-color: rgba(188, 188, 188, 0); color: rgb(255, 255, 255); border-top-left-radius: 100%; border-top-right-radius: 100%; border-bottom-right-radius: 100%; border-bottom-left-radius: 100%; width: 30px; height: 30px; margin-bottom: 10px;" />
+                    </ui:VisualElement>
+                    <ui:VisualElement name="set3" class="inventory-row" style="justify-content: space-around; flex-grow: 1; flex-direction: column;">
+                        <ui:VisualElement name="weapon-sets-container-3" style="flex-grow: 1; flex-direction: row; flex-wrap: wrap; justify-content: space-around;">
+                            <InventorySystem.UI_BaseInventorySlot name="weapon-main_hand-3" style="width: 46%; padding-top: 46%; margin-bottom: 4%;" />
+                            <InventorySystem.UI_BaseInventorySlot name="weapon-off_hand-3" style="width: 46%; padding-top: 46%; margin-bottom: 4%;" />
+                        </ui:VisualElement>
+                        <ui:Button text="4" parse-escape-sequences="false" display-tooltip-when-elided="true" name="btn-set-3" style="align-items: center; flex-shrink: 1; justify-content: center; align-self: center; background-color: rgba(188, 188, 188, 0); color: rgb(255, 255, 255); border-top-left-radius: 100%; border-top-right-radius: 100%; border-bottom-right-radius: 100%; border-bottom-left-radius: 100%; width: 30px; height: 30px; margin-bottom: 10px;" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement name="char-inventory">
+                <ui:Label text="Character Inventory" display-tooltip-when-elided="false" name="char-inventory-label" class="text text-secondary" />
+                <ui:VisualElement name="inventory" class="inventory" style="justify-content: space-around; width: 100%;">
+                    <InventorySystem.UI_BaseInventorySlot style="width: 9.1%; padding-top: 9.1%; margin-bottom: 0.9%;" />
+                    <InventorySystem.UI_BaseInventorySlot style="width: 9.1%; padding-top: 9.1%; margin-bottom: 0.9%;" />
+                    <InventorySystem.UI_BaseInventorySlot style="width: 9.1%; padding-top: 9.1%; margin-bottom: 0.9%;" />
+                    <InventorySystem.UI_BaseInventorySlot style="width: 9.1%; padding-top: 9.1%; margin-bottom: 0.9%;" />
+                    <InventorySystem.UI_BaseInventorySlot style="width: 9.1%; padding-top: 9.1%; margin-bottom: 0.9%;" />
+                    <InventorySystem.UI_BaseInventorySlot style="width: 9.1%; padding-top: 9.1%; margin-bottom: 0.9%;" />
+                    <InventorySystem.UI_BaseInventorySlot style="width: 9.1%; padding-top: 9.1%; margin-bottom: 0.9%;" />
+                    <InventorySystem.UI_BaseInventorySlot style="width: 9.1%; padding-top: 9.1%; margin-bottom: 0.9%;" />
+                    <InventorySystem.UI_BaseInventorySlot style="width: 9.1%; padding-top: 9.1%; margin-bottom: 0.9%;" />
+                    <InventorySystem.UI_BaseInventorySlot style="width: 9.1%; padding-top: 9.1%; margin-bottom: 0.9%;" />
+                    <InventorySystem.UI_BaseInventorySlot style="width: 9.1%; padding-top: 9.1%; margin-bottom: 0.9%;" />
+                    <InventorySystem.UI_BaseInventorySlot style="width: 9.1%; padding-top: 9.1%; margin-bottom: 0.9%;" />
+                    <InventorySystem.UI_BaseInventorySlot style="width: 9.1%; padding-top: 9.1%; margin-bottom: 0.9%;" />
+                    <InventorySystem.UI_BaseInventorySlot style="width: 9.1%; padding-top: 9.1%; margin-bottom: 0.9%;" />
+                    <InventorySystem.UI_BaseInventorySlot style="width: 9.1%; padding-top: 9.1%; margin-bottom: 0.9%;" />
+                    <InventorySystem.UI_BaseInventorySlot style="width: 9.1%; padding-top: 9.1%; margin-bottom: 0.9%;" />
+                    <InventorySystem.UI_BaseInventorySlot style="width: 9.1%; padding-top: 9.1%; margin-bottom: 0.9%;" />
+                    <InventorySystem.UI_BaseInventorySlot style="width: 9.1%; padding-top: 9.1%; margin-bottom: 0.9%;" />
+                    <InventorySystem.UI_BaseInventorySlot style="width: 9.1%; padding-top: 9.1%; margin-bottom: 0.9%;" />
+                    <InventorySystem.UI_BaseInventorySlot style="width: 9.1%; padding-top: 9.1%; margin-bottom: 0.9%;" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement name="party-stash" class="inventory-panel">
+                <ui:Label text="Party Stash" display-tooltip-when-elided="false" name="party-stash-label" class="text-secondary text" />
+                <ui:TextField picking-mode="Ignore" label="Search" value="Item name..." name="txt-party-stash-search" password="false" class="input-field-color" style="margin-left: 10%; color: rgb(241, 201, 26); align-self: auto; align-items: center; margin-bottom: 6px;" />
+                <ui:VisualElement name="stash-body" style="flex-grow: 1; flex-direction: row; justify-content: space-between;">
+                    <ui:VisualElement name="stash-filter-options" style="width: auto; flex-grow: 0; min-width: 10%; justify-content: flex-start;">
+                        <ui:VisualElement name="filters" style="flex-grow: 1;">
+                            <ui:Button text="&#10;" parse-escape-sequences="true" display-tooltip-when-elided="true" name="btn-byarmour" enable-rich-text="false" style="height: 10.1%; background-color: rgba(188, 188, 188, 0); border-left-color: rgba(149, 149, 149, 0); border-right-color: rgba(149, 149, 149, 0); border-top-color: rgba(149, 149, 149, 0); border-bottom-color: rgba(149, 149, 149, 0); color: rgb(255, 255, 255); white-space: normal; background-image: url(&apos;project://database/Assets/RPG%20Core/Database/Resources/Sprites/Icons/euipment-slots/shield-slot.png?fileID=21300000&amp;guid=3ad6470298e7689479c289297b274591&amp;type=3#shield-slot&apos;);" />
+                            <ui:Button text="&#10;" parse-escape-sequences="true" display-tooltip-when-elided="false" name="btn-byweapon" enable-rich-text="false" style="height: 10.1%; background-color: rgba(188, 188, 188, 0); border-left-color: rgba(149, 149, 149, 0); border-right-color: rgba(149, 149, 149, 0); border-top-color: rgba(149, 149, 149, 0); border-bottom-color: rgba(149, 149, 149, 0); color: rgb(255, 255, 255); white-space: normal; background-image: url(&apos;project://database/Assets/RPG%20Core/Database/Resources/Sprites/Icons/euipment-slots/sword-slot.png?fileID=21300000&amp;guid=3468923b3fbda4946b306d843d103bc5&amp;type=3#sword-slot&apos;);" />
+                            <ui:Button parse-escape-sequences="true" display-tooltip-when-elided="false" name="btn-byconsumable" enable-rich-text="false" style="height: 10.1%; background-color: rgba(188, 188, 188, 0); border-left-color: rgba(149, 149, 149, 0); border-right-color: rgba(149, 149, 149, 0); border-top-color: rgba(149, 149, 149, 0); border-bottom-color: rgba(149, 149, 149, 0); color: rgb(255, 255, 255); white-space: normal; background-image: url(&apos;project://database/Assets/RPG%20Core/Database/Resources/Sprites/Icons/euipment-slots/consumable-slot.png?fileID=21300000&amp;guid=cb24cc1734369684192dd26edde3a01b&amp;type=3#consumable-slot&apos;); width: auto;" />
+                        </ui:VisualElement>
+                        <ui:Button parse-escape-sequences="true" display-tooltip-when-elided="false" name="btn-sort" enable-rich-text="false" text="Sort" style="height: 10.1%; background-color: rgba(188, 188, 188, 0); border-left-color: rgba(149, 149, 149, 0); border-right-color: rgba(149, 149, 149, 0); border-top-color: rgba(149, 149, 149, 0); border-bottom-color: rgba(149, 149, 149, 0); color: rgb(255, 255, 255); white-space: normal; background-image: none; width: auto; align-self: auto; justify-content: flex-start; padding-right: 4px; padding-left: 4px;" />
+                    </ui:VisualElement>
+                    <ui:VisualElement name="party-inventory" class="inventory inventory-row" style="flex-grow: 1; flex-direction: row; flex-wrap: wrap; justify-content: space-around; align-items: center;">
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                        <InventorySystem.UI_BaseInventorySlot style="width: 10.1%; padding-top: 10.1%; margin-bottom: 0.9%;" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
