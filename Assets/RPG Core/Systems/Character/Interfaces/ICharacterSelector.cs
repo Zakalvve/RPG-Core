@@ -4,7 +4,7 @@ namespace RPG.Core.Character
 {
     public interface ICharacterSelector : IIDable
     {
-        IPartyCharacter Character { get; }
+        ICharacterData Character { get; }
         void Select();
         void Deselect();
     }

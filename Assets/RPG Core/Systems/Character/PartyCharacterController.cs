@@ -1,6 +1,5 @@
 using UnityEngine;
 using Zenject;
-using RPG.Core.Events;
 
 namespace RPG.Core.Character {
     public class PartyCharacterController : MonoBehaviour, ICharacterSelector
@@ -9,12 +8,12 @@ namespace RPG.Core.Character {
         private PartyCharacter _character;
         private ISystemMessenger _messenger;
         private MeshRenderer _renderer;
-        private CharacterMovementController _moveController;
+        private PawnMovementController _moveController;
         #endregion
 
         #region Initialize
         [Inject]
-        public void Initialize(PartyCharacter character, ISystemMessenger messenger,MeshRenderer renderer,CharacterMovementController moveController)
+        public void Initialize(PartyCharacter character, ISystemMessenger messenger,MeshRenderer renderer,PawnMovementController moveController)
         {
             _character = character;
             _messenger = messenger;
@@ -25,7 +24,7 @@ namespace RPG.Core.Character {
 
         #region ICharacterSelector
         public string ID => _character.ID;
-        public IPartyCharacter Character => _character;
+        public ICharacterData Character => _character;
         public void Select()
         {
             _messenger.ShowMessage($"{_character.Name} selected",Color.green);

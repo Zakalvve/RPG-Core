@@ -48,7 +48,7 @@ namespace RPG.Core.UI.Components.UnitFrames
             }
         }
 
-        public void AddPartyMember(IPartyCharacter character)
+        public void AddPartyMember(ICharacterData character)
         {
             if (inactiveSlots.Count == 0) throw new InvalidOperationException("Requested addition of new party memeber, but party is already full");
 
@@ -58,7 +58,7 @@ namespace RPG.Core.UI.Components.UnitFrames
             root.Add(frame);
         }
 
-        public void RemovePartyMember(IPartyCharacter character)
+        public void RemovePartyMember(ICharacterData character)
         {
             var toRemove = activeMembers.First(frame => frame.AllocatedCharacterID == character.ID);
             if (toRemove != null)

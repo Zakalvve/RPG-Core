@@ -39,12 +39,12 @@ namespace RPG.Core.UI.Components.UnitFrames
             }
         }
 
-        void AddPartyMember(IPartyCharacter character)
+        void AddPartyMember(ICharacterData character)
         {
             frame.AddPartyMember(character);
         }
 
-        void RemovePartyMember(IPartyCharacter character)
+        void RemovePartyMember(ICharacterData character)
         {
             frame.RemovePartyMember(character);
         }

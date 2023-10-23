@@ -101,7 +101,7 @@ namespace RPG.Core.Player
                     //Artifical and to be removed
                     if (ChangeCharacter(character))
                     {
-                        _emitter.Emit(PlayerEvents.OnPlayerSelectCharacter,this,new CharacterSelectEventArgs(selectedCharacter.Character, character, character.gameObject));
+                        _emitter.Emit(PlayerEvents.OnPlayerSelectCharacter,this,new CharacterSelectEventArgs(character, character.gameObject));
                     }
                 }
             }

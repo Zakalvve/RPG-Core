@@ -22,7 +22,7 @@ namespace RPG.Core.Character.Attributes
     {
         string SourceId { get; }
         float Value { get; }
-        StatBlock.AttributeModifierOperation Operation { get; }
+        AttributeSet.AttributeModifierOperation Operation { get; }
     }
 
     public interface IRPGVital : IRPGAttribute, IBindableObject<IRPGVital>

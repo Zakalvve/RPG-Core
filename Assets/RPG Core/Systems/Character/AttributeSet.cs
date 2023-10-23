@@ -2,26 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 using BansheeGz.BGDatabase;
-using Ardalis.SmartEnum;
 using System.Linq;
 using RPG.Core.SerializableDictionary;
 using RPG.Core.Events;
 
 namespace RPG.Core.Character.Attributes
 {
-    public class StatBlock
+    public class AttributeSet
     {
-        #region Creating New Stat Blocks
-
-        public static bool StatBlockFromCharacter(BGId characterID,out StatBlock stats)
+        #region Creating new Attribute Set
+        public static bool AttributesFromCharacter(BGId characterID,out AttributeSet stats)
         {
             stats = null;
             var characterEntity = E_Character.GetEntity(characterID);
             if (characterEntity == null) return false;
-            stats = StatBlockFromCharacter(characterEntity);
+            stats = AttributesFromCharacter(characterEntity);
             return true;
         }
-        public static StatBlock StatBlockFromCharacter(E_Character character)
+        public static AttributeSet AttributesFromCharacter(E_Character character)
         {
             E_StatBlock statsData = character.f_stats;
             if (statsData == null)
@@ -39,7 +37,7 @@ namespace RPG.Core.Character.Attributes
 
             (SerializableDictionaryStringAttribute stats, Dictionary<Type,Dictionary<string,IRPGAttribute>> statsByType) = CreateAttributes(ExtractDefinitions(statsData.f_stats));
             FormRelationships(stats);
-            return new StatBlock(stats,statsByType);
+            return new AttributeSet(stats,statsByType);
         }
         private static bool ValidateAttributeList(List<E_v_attribute> data)
         {
@@ -194,18 +192,18 @@ namespace RPG.Core.Character.Attributes
         }
         #endregion
 
-        public RPGHealth Health
-        {
-            get 
-            {
-                return _health;
-            }
-        }
         public int Level
         {
             get
             {
                 return (int)_level.Value;
+            }
+        }
+        public RPGHealth Health
+        {
+            get 
+            {
+                return _health;
             }
         }
         public IRPGVital Essence
@@ -216,25 +214,26 @@ namespace RPG.Core.Character.Attributes
             }
         }
 
-        private StatBlock(SerializableDictionaryStringAttribute stats,Dictionary<Type,Dictionary<string,IRPGAttribute>> statsByClassType)
+        private AttributeSet(SerializableDictionaryStringAttribute attributes,Dictionary<Type,Dictionary<string,IRPGAttribute>> attributesByClassType)
         {
-            _stats = stats;
-            _statsByClassType = statsByClassType;
+            _attributes = attributes;
+            _attributesByClassType = attributesByClassType;
             _health = new RPGHealth();
-            if (TryGetAttribute<RPGVital>("health", out RPGVital health))
-            {
-                _health.AssignHealth(health);
-            }
-            if (TryGetAttribute<RPGVital>("vigor", out RPGVital vigor)){
-                _health.AssignVigor(vigor);
-            }
 
-            if (TryGetAttribute<RPGAttribute>("level", out RPGAttribute level))
+            if (TryGetAttribute("level",out RPGAttribute level))
             {
                 _level = level;
             }
 
-            if (TryGetAttribute<RPGResource>("essence",out RPGResource essence))
+            if (TryGetAttribute("health", out RPGVital health))
+            {
+                _health.AssignHealth(health);
+            }
+            if (TryGetAttribute("vigor", out RPGVital vigor)){
+                _health.AssignVigor(vigor);
+            }
+
+            if (TryGetAttribute("essence",out RPGResource essence))
             {
                 _essence = essence;
             }
@@ -244,12 +243,12 @@ namespace RPG.Core.Character.Attributes
         private RPGHealth _health;
         private RPGResource _essence;
 
-        private SerializableDictionaryStringAttribute _stats;
-        private Dictionary<Type,Dictionary<string,IRPGAttribute>> _statsByClassType;
+        private SerializableDictionaryStringAttribute _attributes;
+        private Dictionary<Type,Dictionary<string,IRPGAttribute>> _attributesByClassType;
         public bool TryGetAttribute<T>(string name,out T attribute) where T : class, IRPGAttribute
         {
             attribute = null;
-            if (_statsByClassType.TryGetValue(typeof(T),out Dictionary<string,IRPGAttribute> TDict))
+            if (_attributesByClassType.TryGetValue(typeof(T),out Dictionary<string,IRPGAttribute> TDict))
             {
                 if (TDict.TryGetValue(name,out IRPGAttribute foundAttribute))
                 {
@@ -261,27 +260,6 @@ namespace RPG.Core.Character.Attributes
         }
 
         #region Attribute Classes
-        public class AttributeModifierOperation : SmartEnum<AttributeModifierOperation>
-        {
-            private AttributeModifierOperation(string name,int value) : base(name,value) { }
-
-            public static readonly AttributeModifierOperation Add = new AttributeModifierOperation(nameof(Add),100);
-            public static readonly AttributeModifierOperation PercentAdd = new AttributeModifierOperation(nameof(PercentAdd),200);
-            public static readonly AttributeModifierOperation PercentMultiply = new AttributeModifierOperation(nameof(PercentMultiply),300);
-        }
-        public class AttributeModifier : IAttributeModifier
-        {
-            public string SourceId { get; private set; }
-            public float Value { get; private set; }
-            public AttributeModifierOperation Operation { get; private set; }
-
-            public AttributeModifier(string sourceId,float value,AttributeModifierOperation operation)
-            {
-                SourceId = sourceId;
-                Value = value;
-                Operation = operation;
-            }
-        }
         private abstract class BaseRPGAttribute<T> : IRPGAttribute where T : E_v_attribute
         {
             public string Name
@@ -333,6 +311,7 @@ namespace RPG.Core.Character.Attributes
                     return _definition.f_relationship;
                 }
             }
+
             public virtual void Bind(Action<IRPGAttribute> handleObjectChanged)
             {
                 ObjectChanged += handleObjectChanged;
@@ -345,6 +324,7 @@ namespace RPG.Core.Character.Attributes
             {
                 CalculateValue();
             }
+
             public void FormRelationship(List<IRPGAttribute> sources,string formula)
             {
                 var ship = new AttributeRelationship(sources,this,formula);
@@ -446,7 +426,6 @@ namespace RPG.Core.Character.Attributes
                     _target.CalculateValue();
                 }
             }
-
             private class AttributeModifierCollection
             {
                 public int Count => _addMods.Count + _percentAddMods.Count + _percentMultMods.Count;
@@ -457,10 +436,18 @@ namespace RPG.Core.Character.Attributes
 
                 public void AddModifier(IAttributeModifier modifier)
                 {
-                    modifier.Operation
-                        .When(AttributeModifierOperation.Add).Then(() => _addMods.Add(modifier))
-                        .When(AttributeModifierOperation.PercentAdd).Then(() => _percentAddMods.Add(modifier))
-                        .When(AttributeModifierOperation.PercentMultiply).Then(() => _percentMultMods.Add(modifier));
+                    switch (modifier.Operation)
+                    {
+                        case AttributeModifierOperation.Add:
+                            _addMods.Add(modifier);
+                            break;
+                        case AttributeModifierOperation.PercentAdd:
+                            _percentAddMods.Add(modifier);
+                            break;
+                        case AttributeModifierOperation.PercentMult:
+                            _percentMultMods.Add(modifier);
+                            break;
+                    }
                 }
                 public void AddModifiers(IEnumerable<IAttributeModifier> modifiers)
                 {
@@ -656,6 +643,109 @@ namespace RPG.Core.Character.Attributes
                 if (_vigor.CurrentValue <= 0) OnVigourDepleted?.Invoke();
             }
         }
+        public class AttributeModifier : IAttributeModifier
+        {
+            public string SourceId { get; private set; }
+            public float Value { get; private set; }
+            public AttributeModifierOperation Operation { get; private set; }
+
+            public AttributeModifier(string sourceId,float value,AttributeModifierOperation operation)
+            {
+                SourceId = sourceId;
+                Value = value;
+                Operation = operation;
+            }
+        }
+        public enum AttributeModifierOperation
+        {
+            Add,
+            PercentAdd,
+            PercentMult
+        }
+
+        public interface IAttributeData
+        {
+            string Name { get; }
+            string Type { get; }
+            float Value { get; set; }
+            float BaseValue { get; set; }
+            string Relationship { get; }
+            event Action OnValueChanged;
+        }
+        public class AttributeDataDerrived : IAttributeData
+        {
+            private string _name;
+            public string Name => _name;
+            private string _type;
+            public string Type => _type;
+            private float _value;
+            public float Value { get => _value; set => _value = value; }
+            private float _baseValue;
+            public float BaseValue { get => _baseValue; set => _baseValue = value; }
+
+#nullable enable
+            //if the attribute definition is null the attribute is assumed to have no relationships
+            //this is used for simple values like current health etc
+            private E_AttributeDefinition? _definition;
+            public string Relationship => _definition?.f_relationship ?? "";
+#nullable disable
+
+            public event Action OnValueChanged;
+
+            public AttributeDataDerrived(string name,string type) : this(name,type,null) { }
+            public AttributeDataDerrived(string name, string type, E_AttributeDefinition definition)
+            {
+                _name = name;
+                _type = type;
+                _definition = definition;
+            }
+        }
+        public class AttributeDataDb : IAttributeData
+        {
+            private E_v_attribute _data;
+            private string _name;
+            public string Name => _data.f_name;
+            private string _type;
+            public string Type => _data.f_type;
+            private float _value;
+            public float Value { get => _data.f_value; set => _data.f_value = value; }
+            private float _baseValue;
+            public float BaseValue { get => _data.f_baseValue; set => _data.f_baseValue = value; }
+
+            private E_AttributeDefinition _definition;
+            public string Relationship => _definition.f_relationship;
+
+            public event Action OnValueChanged;
+
+            public AttributeDataDb(E_v_attribute data, E_AttributeDefinition definition)
+            {
+                _data = data;
+                _definition = definition;
+
+                //set up listening for db changes
+                EventEmitter.OnReset += RemoveListeners;
+                _data.Meta.AddEntityUpdatedListener(_data.Id,OnAttributeChanged);
+            }
+            
+            protected virtual void RemoveListeners()
+            {
+                _data.Meta.RemoveEntityUpdatedListener(_data.Id,OnAttributeChanged);
+            }
+
+            ~AttributeDataDb()
+            {
+                RemoveListeners();
+            }
+
+            public void OnAttributeChanged(object sender,BGEventArgsEntityUpdated args)
+            {
+                if (args.FieldId == _data.Meta.GetFieldId("baseValue"))
+                {
+                    OnValueChanged?.Invoke();
+                }
+            }
+        }
+
         #endregion
     }
 }

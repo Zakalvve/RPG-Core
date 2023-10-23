@@ -5,19 +5,19 @@ namespace RPG.Core.Events
 {
     public class CharacterEventArgs : RPGEventArgs
     {
-        public IPartyCharacter character;
-        public CharacterEventArgs(IPartyCharacter c) : base (c.ID)
+        public ICharacterData character;
+        public CharacterEventArgs(ICharacterData c) : base (c.ID)
         {
             character = c;
         }
     }
 
-    public class CharacterSelectEventArgs : CharacterEventArgs
+    public class CharacterSelectEventArgs : RPGEventArgs
     {
         public GameObject selectedGO;
         public ICharacterSelector characterSelector;
 
-        public CharacterSelectEventArgs(IPartyCharacter c,ICharacterSelector s, GameObject go) : base(c)
+        public CharacterSelectEventArgs(ICharacterSelector s, GameObject go) : base(s.ID)
         {
             selectedGO = go;
             characterSelector = s;
@@ -27,7 +27,7 @@ namespace RPG.Core.Events
     public class CharacterMoveEventArgs : CharacterEventArgs
     {
         public Vector3 moveTo;
-        public CharacterMoveEventArgs(IPartyCharacter c, Vector3 v) : base(c)
+        public CharacterMoveEventArgs(ICharacterData c, Vector3 v) : base(c)
         {
             moveTo = v;
         }

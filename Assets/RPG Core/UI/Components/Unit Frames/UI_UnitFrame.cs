@@ -50,7 +50,7 @@ namespace RPG.Core.UI.Components.UnitFrames
             }
         }
 
-        public void AllocateUnit(IPartyCharacter character)
+        public void AllocateUnit(ICharacterData character)
         {
             //bind character
             AllocatedCharacterID = character.ID;
@@ -60,7 +60,7 @@ namespace RPG.Core.UI.Components.UnitFrames
             Show();
         }
 
-        public void DeallocateUnit(IPartyCharacter character)
+        public void DeallocateUnit(ICharacterData character)
         {
             if (character.ID != AllocatedCharacterID) throw new InvalidOperationException("Trying to deallocate character, but character ID does not match allocated character ID");
             //unbind character
@@ -70,7 +70,7 @@ namespace RPG.Core.UI.Components.UnitFrames
             Hide();
         }
 
-        public void Update(IPartyCharacter character)
+        public void Update(ICharacterData character)
         {
             root.style.backgroundImage = new StyleBackground(character.Portrait);
             var health = character.Stats.Health;

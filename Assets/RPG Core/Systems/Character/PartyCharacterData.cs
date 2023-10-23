@@ -9,7 +9,7 @@ using System;
 
 namespace RPG.Core.Character
 {
-    public class PartyCharacter : M_Character, IPartyCharacter, IActionContext, IEquipContext<EquipmentTypes>, BGAddonSaveLoad.BeforeSaveReciever
+    public class PartyCharacter : M_Character, ICharacterData, IActionContext, IEquipContext<EquipmentTypes>, BGAddonSaveLoad.BeforeSaveReciever
     {
         #region IPartyCharacter
         public string ID => Entity.Id.ToString();
@@ -17,7 +17,7 @@ namespace RPG.Core.Character
         public Sprite Portrait => f_portrait;
 
         //stats
-        public StatBlock Stats { get; private set; }
+        public AttributeSet Stats { get; private set; }
 
         //inventory
         public Inventory Bags { get; private set; }
@@ -35,7 +35,7 @@ namespace RPG.Core.Character
 
         #region Initialize
         [Inject]
-        public void Initialize(StatBlock statBlock,Inventory inventory,ActionBar actionBar,EquipmentInventory equipmentInventory,ISystemMessenger messenger)
+        public void Initialize(AttributeSet statBlock,Inventory inventory,ActionBar actionBar,EquipmentInventory equipmentInventory,ISystemMessenger messenger)
         {
             Stats = statBlock;
             Bags = inventory;

@@ -9,7 +9,7 @@ using Zenject;
 
 namespace RPG.Core.Installers
 {
-    public class PlayerInstaller : MonoInstaller<PlayerInstaller>
+    public class PlayerControllerInstaller : MonoInstaller<PlayerControllerInstaller>
     {
         public override void InstallBindings()
         {

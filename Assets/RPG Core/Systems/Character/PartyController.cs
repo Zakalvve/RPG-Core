@@ -11,11 +11,11 @@ namespace RPG.Core.Character
 {
     public class PartyController : M_Party, IParty
     {
-        public List<IPartyCharacter> PartyMemberData
+        public List<ICharacterData> PartyMemberData
         {
             get
             {
-                return _partyMembers.Select(kvp => kvp.Value.Character).Cast<IPartyCharacter>().ToList();
+                return _partyMembers.Select(kvp => kvp.Value.Character).Cast<ICharacterData>().ToList();
             }
         }
         private PartyCharacterController _focusedPartyMember;
@@ -71,7 +71,7 @@ namespace RPG.Core.Character
         #region Events
         void OnPlayerSelectCharacter(object sender,CharacterSelectEventArgs args)
         {
-            if (!TrySelectPartyMember(args.character.ID))
+            if (!TrySelectPartyMember(args.characterSelector.ID))
             {
                 if (args.selectedGO.TryGetComponent(out PartyCharacterController pcController))
                 {

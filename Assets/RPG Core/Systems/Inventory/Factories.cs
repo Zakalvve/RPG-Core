@@ -37,6 +37,7 @@ namespace InventorySystem
                 return sceneMembers;
             }
         }
+
         public class InventoryFactory : IFactory<Inventory>
         {
             [Inject]
@@ -71,12 +72,15 @@ namespace InventorySystem
         {
             [Inject]
             PartyCharacter character;
+            [Inject]
+            IActionContext context;
+            
             const int capacity = 12;
             public ActionBar Create()
             {
-                return CreateActionBarFromCharacter(character,capacity);
+                return CreateActionBarFromCharacter(character,capacity, character);
             }
-            private static ActionBar CreateActionBarFromCharacter(PartyCharacter character,int expectedCapacity)
+            private static ActionBar CreateActionBarFromCharacter(PartyCharacter character,int expectedCapacity, IActionContext context)
             {
                 var actionBar = ((E_ActionBar)character.f_actionBar);
 
@@ -93,7 +97,7 @@ namespace InventorySystem
                     dataSlots = CreateDataSlots(character.f_name,"Action",dataSlots,expectedCapacity);
                 }
                 actionBar.f_slots = dataSlots;
-                return new ActionBar(dataSlots,character);
+                return new ActionBar(dataSlots,context);
             }
         }
         public class EquipmentInventoryFactory : IFactory<EquipmentInventory>
@@ -102,12 +106,14 @@ namespace InventorySystem
             PartyCharacter character;
             [Inject]
             IEquipmentConfig config;
+            [Inject]
+            IEquipContext<EquipmentTypes> context;
 
             public EquipmentInventory Create()
             {
-                return CreateEquipmentInventoryFromCharacter(character, config);
+                return CreateEquipmentInventoryFromCharacter(character, config, character);
             }
-            private static EquipmentInventory CreateEquipmentInventoryFromCharacter(PartyCharacter character,IEquipmentConfig config)
+            private static EquipmentInventory CreateEquipmentInventoryFromCharacter(PartyCharacter character,IEquipmentConfig config,IEquipContext<EquipmentTypes> context)
             {
                 Dictionary<string,E_InventorySlot> dataBindings = new Dictionary<string,E_InventorySlot>();
 
@@ -122,7 +128,7 @@ namespace InventorySystem
 
                 dataBindings = ExtractEquipmentDataBindings(character,config.SlotBindings);
 
-                return new EquipmentInventory(character,config,dataBindings);
+                return new EquipmentInventory(context,config,dataBindings);
             }
             public static Dictionary<string,E_InventorySlot> ExtractEquipmentDataBindings(PartyCharacter character,Dictionary<string,EquipmentTypes> input)
             {
@@ -217,13 +223,13 @@ namespace InventorySystem
                 return new FilterableInventory(dataSlots);
             }
         }
-        public class StatBlockFactory : IFactory<StatBlock>
+        public class StatBlockFactory : IFactory<AttributeSet>
         {
             [Inject]
             PartyCharacter character;
-            public StatBlock Create()
+            public AttributeSet Create()
             {
-                return StatBlock.StatBlockFromCharacter(((E_Character)character.Entity));
+                return AttributeSet.AttributesFromCharacter(((E_Character)character.Entity));
             }
         }
         //helper methods

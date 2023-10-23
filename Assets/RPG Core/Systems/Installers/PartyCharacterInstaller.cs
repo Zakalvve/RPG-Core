@@ -7,7 +7,7 @@ using RPG.Core.Character.Attributes;
 
 namespace RPG.Core.Installers
 {
-    public class CharacterInstaller : MonoInstaller<CharacterInstaller>
+    public class PartyCharacterInstaller : MonoInstaller<PartyCharacterInstaller>
     {
         public override void InstallBindings()
         {
@@ -17,9 +17,9 @@ namespace RPG.Core.Installers
             Container.Bind<EquipmentInventory>().FromFactory<Factories.EquipmentInventoryFactory>().AsSingle();
             Container.Bind<MeshRenderer>().FromComponentsOnRoot().AsSingle();
             Container.Bind<NavMeshAgent>().FromComponentOnRoot().AsSingle();
-            Container.Bind<CharacterMovementController>().FromComponentOnRoot().AsSingle();
+            Container.Bind<PawnMovementController>().FromComponentOnRoot().AsSingle();
             Container.Bind<PartyCharacterController>().FromComponentOnRoot().AsSingle();
-            Container.Bind<StatBlock>().FromFactory<Factories.StatBlockFactory>().AsSingle();
+            Container.Bind<AttributeSet>().FromFactory<Factories.StatBlockFactory>().AsSingle();
         }
     }
 }
