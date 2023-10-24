@@ -26,20 +26,20 @@ namespace RPG.Core.Installers
             Container.Bind<TooltipController>().AsSingle();
 
             //Inventory Displays
-            Container.Bind<IUI_ChangeableInventoryDisplay<Inventory>>().To<UI_InventoryDisplay<Inventory>>().AsTransient().WithArguments("inventory");
-            Container.Bind<IUI_InventoryController<Inventory,int>>().To<UI_InventoryController<Inventory,IItem>>().AsTransient();
+            Container.Bind<IUI_ChangeableInventoryDisplay<IInventory>>().To<UI_InventoryDisplay<IInventory>>().AsTransient().WithArguments("inventory");
+            Container.Bind<IUI_InventoryController<IInventory,int>>().To<UI_InventoryController<IInventory,IItem>>().AsTransient();
 
             //Stash Displays
-            Container.Bind<IUI_ChangeableInventoryDisplay<FilterableInventory>>().To<UI_PartyStashDisplay>().AsTransient().WithArguments("party-inventory");
-            Container.Bind<IUI_InventoryController<FilterableInventory,int>>().To<UI_InventoryController<FilterableInventory,IItem>>().AsTransient();
+            Container.Bind<IUI_ChangeableInventoryDisplay<IPartyStash>>().To<UI_PartyStashDisplay>().AsTransient().WithArguments("party-inventory");
+            Container.Bind<IUI_InventoryController<IPartyStash,int>>().To<UI_InventoryController<IPartyStash,IItem>>().AsTransient();
 
             //Equipment Displays
-            Container.Bind<IUI_ChangeableInventoryDisplay<EquipmentInventory>>().To<UI_EquipmentDisplay>().AsTransient().WithArguments("equipment");
-            Container.Bind<IUI_InventoryController<EquipmentInventory,string>>().To<UI_EquipmentController<EquipmentInventory,IEquipableItem<EquipmentTypes>>>().AsTransient();
+            Container.Bind<IUI_ChangeableInventoryDisplay<IEquipmentInventory>>().To<UI_EquipmentDisplay>().AsTransient().WithArguments("equipment");
+            Container.Bind<IUI_InventoryController<IEquipmentInventory,string>>().To<UI_EquipmentController<IEquipmentInventory,IEquipableItem<EquipmentTypes>>>().AsTransient();
 
             //Action Bar displays
-            Container.Bind<IUI_ChangeableInventoryDisplay<ActionBar>>().To<UI_ActionBarDisplay>().AsTransient().WithArguments("action-bar-root");
-            Container.Bind<IUI_InventoryController<ActionBar,int>>().To<UI_ActionBarController>().AsTransient();
+            Container.Bind<IUI_ChangeableInventoryDisplay<IActionBar>>().To<UI_ActionBarDisplay>().AsTransient().WithArguments("action-bar-root");
+            Container.Bind<IUI_InventoryController<IActionBar,int>>().To<UI_ActionBarController>().AsTransient();
 
             List<E_InventorySlot> ghostSlot = new List<E_InventorySlot>();
             var newSlot = E_InventorySlot.NewEntity();

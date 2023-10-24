@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Item;
-using UnityEngine;
 
 namespace InventorySystem
 {
     [Serializable]
-    public class Inventory : SlotContainer<IItem>
+    public class Inventory : SlotContainer<IItem>, IInventory
     {
         public Inventory(List<E_InventorySlot> dbSlots) : base(dbSlots) { }
         public virtual ISlotData InsertAll(ISlotData itemSlot)
@@ -78,5 +76,12 @@ namespace InventorySystem
                 }
             } while (wasSwapped);
         }
+    }
+
+    public interface IInventory : ISlotContainerList<IItem>
+    {
+        ISlotData InsertAll(ISlotData itemSlot);
+        IEnumerable<ISlotData> InsertAll(IEnumerable<ISlotData> items);
+        void SortByType();
     }
 }

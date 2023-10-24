@@ -10,7 +10,7 @@ namespace RPG.Core.Installers
         public override void InstallBindings()
         {
             Container.Bind<IParty>().To<PartyController>().FromComponentOnRoot().AsSingle().NonLazy();
-            Container.Bind<FilterableInventory>().FromFactory<Factories.PartyStashFactory>().AsSingle();
+            Container.Bind<IPartyStash>().To<FilterableInventory>().FromFactory<Factories.PartyStashFactory>().AsSingle();
         }
     }
 }

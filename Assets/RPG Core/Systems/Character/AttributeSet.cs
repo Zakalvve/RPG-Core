@@ -11,12 +11,12 @@ namespace RPG.Core.Character.Attributes
     public class AttributeSet
     {
         #region Creating new Attribute Set
-        public static bool AttributesFromCharacter(BGId characterID,out AttributeSet stats)
+        public static bool AttributesFromCharacter(BGId characterID,out AttributeSet attributes)
         {
-            stats = null;
+            attributes = null;
             var characterEntity = E_Character.GetEntity(characterID);
             if (characterEntity == null) return false;
-            stats = AttributesFromCharacter(characterEntity);
+            attributes = AttributesFromCharacter(characterEntity);
             return true;
         }
         public static AttributeSet AttributesFromCharacter(E_Character character)
@@ -29,116 +29,115 @@ namespace RPG.Core.Character.Attributes
                 character.f_stats = statsData;
             }
 
-            if (!ValidateAttributeList(statsData.f_stats))
-            {
-                //we need to ensure the entity data is correct before proceeding
-                statsData.f_stats = CreateAttributesFromDefinitions(character.f_name, statsData.f_stats);
-            }
+            List<IAttributeData> attributeData;
+            //we need to ensure the entity data is correct before proceeding
+            (statsData.f_stats, attributeData) = CreateAttributesFromDefinitions(character.f_name,statsData.f_stats);
 
-            (SerializableDictionaryStringAttribute stats, Dictionary<Type,Dictionary<string,IRPGAttribute>> statsByType) = CreateAttributes(ExtractDefinitions(statsData.f_stats));
+            (SerializableDictionaryStringAttribute stats, Dictionary<Type,Dictionary<string,IRPGAttribute>> statsByType) = CreateAttributes(attributeData);
             FormRelationships(stats);
             return new AttributeSet(stats,statsByType);
         }
-        private static bool ValidateAttributeList(List<E_v_attribute> data)
+        private static (List<E_v_attribute>, List<IAttributeData>) CreateAttributesFromDefinitions(string owningEntity, List<E_v_attribute> input = null)
         {
-            return data == null ? false : data.Count == E_AttributeDefinition.CountEntities;
-        }
-        private static List<E_v_attribute> CreateAttributesFromDefinitions(string owningEntity, List<E_v_attribute> input = null)
-        {
-            var output = input;
-            if (output == null) output = new List<E_v_attribute>();
+            input = input ?? new List<E_v_attribute>();
+
+            var output = new List<IAttributeData>();
             //cycle through all definitions
             E_AttributeDefinition.ForEachEntity(definition =>
             {
-                if (output.Exists(att => att.f_name == definition.f_name)) return;
-                output.Add(CreateAttributeFromDefinition(owningEntity,definition));
+                if (input.Exists(att => att.f_name == $"{owningEntity}_{definition.f_name}"))
+                {
+                    var att = input.Find(att => att.f_name == $"{owningEntity}_{definition.f_name}");
+                    output.Add(CreateAttributeDataFromDbAttribute(att, definition));
+                }
+                else
+                {
+                    if (CreateAttributeFromDefinition(owningEntity,definition, out E_v_attribute newAttribute))
+                    {
+                        input.Add(newAttribute);
+                        output.Add(CreateAttributeDataFromDbAttribute(newAttribute,definition));
+                    } else
+                    {
+                        output.Add(new AttributeDataDerrived(definition));
+                    }
+                }
             });
 
-            return output;
+            return (input,output);
         }
-        private static E_v_attribute CreateAttributeFromDefinition(string owningEntity, E_AttributeDefinition definition)
+        private static IAttributeData CreateAttributeDataFromDbAttribute(E_v_attribute attribute, E_AttributeDefinition definition)
         {
+            if (attribute is E_Vital)
+            {
+                return new VitalDataDb((E_Vital)attribute,definition);
+            } 
+            else if (attribute is E_Attribute)
+            {
+                return new AttributeDataDb((E_Attribute)attribute,definition);
+            }
+            throw new Exception("Unsure of attribute type");
+        }
+        private static bool CreateAttributeFromDefinition(string owningEntity, E_AttributeDefinition definition, out E_v_attribute output)
+        {
+            output = null;
             if (definition.f_type == "vital" || definition.f_type == "resource")
             {
-                var output = E_Vital.NewEntity();
-                output.f_definition = definition;
-                output.f_name = $"{owningEntity}_{definition.f_name}";
-                output.f_type = definition.f_type;
-                output.f_baseValue = definition.f_startingValue;
-                output.f_value = definition.f_startingValue;
-                output.f_currentValue = -1;
-                return output;
+                var vital = E_Vital.NewEntity();
+                vital.f_definition = definition;
+                vital.f_name = $"{owningEntity}_{definition.f_name}";
+                vital.f_type = definition.f_type;
+                vital.f_baseValue = definition.f_startingValue;
+                vital.f_value = definition.f_startingValue;
+                vital.f_currentValue = -1;
+                output = vital;
+                return true;
             }
-            else
+            else if (definition.f_type == "level" || definition.f_type == "primary")
             {
-                var output = E_Attribute.NewEntity();
-                output.f_definition = definition;
-                output.f_name = $"{owningEntity}_{definition.f_name}";
-                output.f_type = definition.f_type;
-                output.f_baseValue = definition.f_startingValue;
-                output.f_value = definition.f_startingValue;
-                return output;
+                var attribute = E_Attribute.NewEntity();
+                attribute.f_definition = definition;
+                attribute.f_name = $"{owningEntity}_{definition.f_name}";
+                attribute.f_type = definition.f_type;
+                attribute.f_baseValue = definition.f_startingValue;
+                attribute.f_value = definition.f_startingValue;
+                output = attribute;
+                return true;
             }
+
+            return false;
         }
-        private static List<(E_v_attribute, E_AttributeDefinition)> ExtractDefinitions(List<E_v_attribute> input)
-        {
-            var output = new List<(E_v_attribute, E_AttributeDefinition)>();
-            foreach (var item in input)
-            {
-                if (item is E_Attribute)
-                {
-                    output.Add((item, ((E_Attribute)item).f_definition));
-                }
-                if (item is E_Vital)
-                {
-                    output.Add((item, ((E_Vital)item).f_definition));
-                }
-            }
-            return output;
-        }
-        private static (SerializableDictionaryStringAttribute, Dictionary<Type,Dictionary<string,IRPGAttribute>>) CreateAttributes(List<(E_v_attribute, E_AttributeDefinition)> input)
+        private static (SerializableDictionaryStringAttribute, Dictionary<Type,Dictionary<string,IRPGAttribute>>) CreateAttributes(List<IAttributeData> input)
         {
             SerializableDictionaryStringAttribute stats = new SerializableDictionaryStringAttribute();
             Dictionary<Type,Dictionary<string,IRPGAttribute>> statsByType = new Dictionary<Type,Dictionary<string,IRPGAttribute>>();
 
             foreach (var data in input)
             {
-                (E_v_attribute attData, E_AttributeDefinition def) = data;
-                if (def.f_type.ToLower() == "vital")
+                //(E_v_attribute attData, E_AttributeDefinition def) = data;
+                if (data is IVitalData)
                 {
-                    RPGVital att = new RPGVital((E_Vital)attData,def, ((E_Vital)attData).f_currentValue);
+                    bool isResource = data.Type == "resource";
+                    RPGVital att = new RPGVital((IVitalData)data,isResource: isResource);
                     Type t = typeof(RPGVital);
                     if (!statsByType.ContainsKey(t))
                     {
                         statsByType.Add(t,new Dictionary<string,IRPGAttribute>());
                     }
-                    statsByType[t].Add(def.f_name,att);
+                    statsByType[t].Add(data.Name,att);
 
-                    stats.Add(def.f_name, att);
-                }
-                else if (def.f_type.ToLower() == "resource")
-                {
-                    RPGResource att = new RPGResource((E_Vital)attData,def,((E_Vital)attData).f_currentValue);
-                    Type t = typeof(RPGResource);
-                    if (!statsByType.ContainsKey(t))
-                    {
-                        statsByType.Add(t,new Dictionary<string,IRPGAttribute>());
-                    }
-                    statsByType[t].Add(def.f_name,att);
-
-                    stats.Add(def.f_name,att);
+                    stats.Add(data.Name, att);
                 }
                 else
                 {
-                    RPGAttribute att = new RPGAttribute((E_Attribute)attData,def);
+                    RPGAttribute att = new RPGAttribute((IAttributeData)data);
                     Type t = typeof(RPGAttribute);
                     if (!statsByType.ContainsKey(t))
                     {
                         statsByType.Add(t,new Dictionary<string,IRPGAttribute>());
                     }
-                    statsByType[t].Add(def.f_name,att);
+                    statsByType[t].Add(data.Name,att);
 
-                    stats.Add(def.f_name,att);
+                    stats.Add(data.Name,att);
                 }
             }
             return (stats,statsByType);
@@ -233,7 +232,7 @@ namespace RPG.Core.Character.Attributes
                 _health.AssignVigor(vigor);
             }
 
-            if (TryGetAttribute("essence",out RPGResource essence))
+            if (TryGetAttribute("essence",out RPGVital essence))
             {
                 _essence = essence;
             }
@@ -241,7 +240,7 @@ namespace RPG.Core.Character.Attributes
 
         private RPGAttribute _level;
         private RPGHealth _health;
-        private RPGResource _essence;
+        private RPGVital _essence;
 
         private SerializableDictionaryStringAttribute _attributes;
         private Dictionary<Type,Dictionary<string,IRPGAttribute>> _attributesByClassType;
@@ -258,9 +257,27 @@ namespace RPG.Core.Character.Attributes
             }
             return false;
         }
+        public bool TryGetAttribute(string name, out IRPGAttribute attribute)
+        {
+            attribute = null;
+
+            if (_attributes.TryGetValue(name,out attribute))
+            {
+                return true;
+            }
+
+            return false;
+        }
+        public bool TryGetVital(string name, out IRPGVital vital)
+        {
+            if (TryGetAttribute(name, out vital)) {
+                return true;
+            }
+            return false;
+        }
 
         #region Attribute Classes
-        private abstract class BaseRPGAttribute<T> : IRPGAttribute where T : E_v_attribute
+        private abstract class BaseRPGAttribute<T> : IRPGAttribute where T : IAttributeData
         {
             public string Name
             {
@@ -268,39 +285,35 @@ namespace RPG.Core.Character.Attributes
                 {
                     return _data.Name;
                 }
-                set
-                {
-                    _data.Name = value;
-                }
             }
             public string Type
             {
                 get
                 {
-                    return _definition.f_type;
+                    return _data.Type;
                 }
             }
             public float Value
             {
                 get
                 {
-                    return _data.f_value;
+                    return _data.Value;
                 }
                 private set
                 {
-                    _data.f_value = value;
+                    _data.Value = value;
                 }
             }
             public float BaseValue
             {
                 get
                 {
-                    return _data.f_baseValue;
+                    return _data.BaseValue;
                 }
                 set
                 {
                     if (value < 0) value = 0;
-                    _data.f_baseValue = value;
+                    _data.BaseValue = value;
                     CalculateValue();
                 }
             }
@@ -308,7 +321,7 @@ namespace RPG.Core.Character.Attributes
             {
                 get
                 {
-                    return _definition.f_relationship;
+                    return _data.Relationship;
                 }
             }
 
@@ -340,40 +353,21 @@ namespace RPG.Core.Character.Attributes
             public void AddModifiers(IEnumerable<IAttributeModifier> modifiers)
             {
                 _modifiers.AddModifiers(modifiers);
+                CalculateValue();
             }
             public void RemoveModifiersById(string sourceId)
             {
                 _modifiers.RemoveModifiersById(sourceId);
+                CalculateValue();
             }
 
-            public BaseRPGAttribute(T data,E_AttributeDefinition definition)
+            public BaseRPGAttribute(T data)
             {
                 _data = data;
-                _definition = definition;
-                EventEmitter.OnReset += RemoveListeners;
-                _data.Meta.AddEntityUpdatedListener(_data.Id,OnAttributeChanged);
-            }
-
-            protected virtual void RemoveListeners()
-            {
-                _data.Meta.RemoveEntityUpdatedListener(_data.Id,OnAttributeChanged);
-            }
-            ~BaseRPGAttribute()
-            {
-                RemoveListeners();
-            }
-
-            
-            public void OnAttributeChanged(object sender, BGEventArgsEntityUpdated args)
-            {
-                if (args.FieldId == _data.Meta.GetFieldId("baseValue"))
-                {
-                    BaseValue = _data.f_baseValue;
-                }
+                _data.OnValueChanged += Sync;
             }
 
             protected T _data;
-            protected E_AttributeDefinition _definition;
             protected event Action<IRPGAttribute> ObjectChanged;
             private AttributeModifierCollection _modifiers = new AttributeModifierCollection();
             private AttributeRelationship _relationship;
@@ -509,38 +503,23 @@ namespace RPG.Core.Character.Attributes
             }
             #endregion
         }
-        private class RPGAttribute : BaseRPGAttribute<E_Attribute>
+        private class RPGAttribute : BaseRPGAttribute<IAttributeData>
         {
-            public RPGAttribute(E_Attribute data,E_AttributeDefinition definition) : base(data,definition) { }
-
-            #region Serialization
-            [SerializeField]
-            public float value;
-            [SerializeField]
-            public float baseValue;
-            public virtual void OnBeforeSerialize()
-            {
-                value = Value;
-                baseValue = BaseValue;
-            }
-
-            public virtual void OnAfterDeserialize()
-            {
-                BaseValue = baseValue;
-            }
-            #endregion
+            public RPGAttribute(IAttributeData data) : base(data) { }
         }
-        private class RPGVital : BaseRPGAttribute<E_Vital>, IRPGVital
+        private class RPGVital : BaseRPGAttribute<IVitalData>, IRPGVital
         {
+            private bool _isResource;
+
             public float CurrentValue
             {
                 get
                 {
-                    return _data.f_currentValue;
+                    return _data.CurrentValue;
                 }
                 private set
                 {
-                    _data.f_currentValue = Mathf.Clamp(value,0,Value);
+                    _data.CurrentValue = Mathf.Clamp(value,0,Value);
                     CalculateValue();
                 }
             }
@@ -551,13 +530,14 @@ namespace RPG.Core.Character.Attributes
             }
             public virtual void ChangeCurrentValue(float amount)
             {
+                if (CurrentValue + amount <= 0 && _isResource) throw new Exception($"You don't have enough ${Name} to do that.");
                 CurrentValue += amount;
             }
 
             private event Action<IRPGVital> VitalChanged;
 
             public void Bind(Action<IRPGVital> handleObjectChanged)
-            { 
+            {
                 VitalChanged += handleObjectChanged;
             }
 
@@ -572,43 +552,13 @@ namespace RPG.Core.Character.Attributes
                 VitalChanged?.Invoke(this);
             }
 
-            public RPGVital(E_Vital vital,E_AttributeDefinition definition,float currentValue = -1) : base(vital,definition)
+            public RPGVital(IVitalData vital,/*float currentValue = -1,*/bool isResource = false) : base(vital)
             {
                 //bypass property and set current value to -1 or the current value stored in data base
                 //later if the value is still -1 we assume that this is a new vital and set its current value equal to its value
                 //we can't do that now as its calculated value is dependant on other attributes first being defined
-                _data.f_currentValue = currentValue;
-                EventEmitter.OnReset += RemoveListeners;
-                _data.Meta.AddEntityUpdatedListener(_data.Id,OnVitaChanged);
-            }
-
-            ~RPGVital()
-            {
-                RemoveListeners();
-            }
-
-            protected override void RemoveListeners()
-            {
-                base.RemoveListeners();
-                _data.Meta.RemoveEntityUpdatedListener(_data.Id,OnVitaChanged);
-            }
-
-            public void OnVitaChanged(object sender,BGEventArgsEntityUpdated args)
-            {
-                if (args.FieldId == _data.Meta.GetFieldId("currentValue"))
-                {
-                    CurrentValue = _data.f_currentValue;
-                }
-            }
-        }
-        private class RPGResource : RPGVital
-        {
-            public RPGResource(E_Vital vital,E_AttributeDefinition definition,float currentValue = -1) : base(vital,definition,currentValue) { }
-
-            public override void ChangeCurrentValue(float amount)
-            {
-                if (CurrentValue + amount <= 0) throw new Exception($"You don't have enough ${Name} to do that.");
-                base.ChangeCurrentValue(amount);
+                //_data.CurrentValue = currentValue;
+                _isResource = isResource;
             }
         }
         public class RPGHealth
@@ -662,7 +612,6 @@ namespace RPG.Core.Character.Attributes
             PercentAdd,
             PercentMult
         }
-
         public interface IAttributeData
         {
             string Name { get; }
@@ -672,52 +621,45 @@ namespace RPG.Core.Character.Attributes
             string Relationship { get; }
             event Action OnValueChanged;
         }
+        public interface IVitalData : IAttributeData
+        {
+            float CurrentValue { get; set; }
+        }
         public class AttributeDataDerrived : IAttributeData
         {
-            private string _name;
-            public string Name => _name;
-            private string _type;
-            public string Type => _type;
             private float _value;
             public float Value { get => _value; set => _value = value; }
             private float _baseValue;
             public float BaseValue { get => _baseValue; set => _baseValue = value; }
 
-#nullable enable
             //if the attribute definition is null the attribute is assumed to have no relationships
             //this is used for simple values like current health etc
-            private E_AttributeDefinition? _definition;
-            public string Relationship => _definition?.f_relationship ?? "";
-#nullable disable
+            private E_AttributeDefinition _definition;
+            public string Relationship => _definition.f_relationship;
+            public string Type => _definition.f_type;
+            public string Name => _definition.f_name;
 
             public event Action OnValueChanged;
 
-            public AttributeDataDerrived(string name,string type) : this(name,type,null) { }
-            public AttributeDataDerrived(string name, string type, E_AttributeDefinition definition)
+            public AttributeDataDerrived(E_AttributeDefinition definition)
             {
-                _name = name;
-                _type = type;
                 _definition = definition;
             }
         }
-        public class AttributeDataDb : IAttributeData
+        public abstract class AttributeDataDb<T> : IAttributeData where T : E_v_attribute
         {
-            private E_v_attribute _data;
-            private string _name;
-            public string Name => _data.f_name;
-            private string _type;
-            public string Type => _data.f_type;
-            private float _value;
+            protected T _data;
+            public string Name => _definition.f_name;
             public float Value { get => _data.f_value; set => _data.f_value = value; }
-            private float _baseValue;
             public float BaseValue { get => _data.f_baseValue; set => _data.f_baseValue = value; }
 
             private E_AttributeDefinition _definition;
+            public string Type => _definition.f_type;
             public string Relationship => _definition.f_relationship;
 
             public event Action OnValueChanged;
 
-            public AttributeDataDb(E_v_attribute data, E_AttributeDefinition definition)
+            public AttributeDataDb(T data, E_AttributeDefinition definition)
             {
                 _data = data;
                 _definition = definition;
@@ -726,12 +668,16 @@ namespace RPG.Core.Character.Attributes
                 EventEmitter.OnReset += RemoveListeners;
                 _data.Meta.AddEntityUpdatedListener(_data.Id,OnAttributeChanged);
             }
+
+            protected void ValueChanged()
+            {
+                OnValueChanged?.Invoke();
+            }
             
             protected virtual void RemoveListeners()
             {
                 _data.Meta.RemoveEntityUpdatedListener(_data.Id,OnAttributeChanged);
             }
-
             ~AttributeDataDb()
             {
                 RemoveListeners();
@@ -741,7 +687,40 @@ namespace RPG.Core.Character.Attributes
             {
                 if (args.FieldId == _data.Meta.GetFieldId("baseValue"))
                 {
-                    OnValueChanged?.Invoke();
+                    ValueChanged();
+                }
+            }
+        }
+        public class AttributeDataDb : AttributeDataDb<E_Attribute>
+        {
+            public AttributeDataDb(E_Attribute data,E_AttributeDefinition definition) : base(data,definition) { }
+        }
+        public class VitalDataDb : AttributeDataDb<E_Vital>, IVitalData
+        {
+            public VitalDataDb(E_Vital data,E_AttributeDefinition definition) : base(data,definition) 
+            {
+                EventEmitter.OnReset += RemoveListeners;
+                _data.Meta.AddEntityUpdatedListener(_data.Id,OnVitaChanged);
+            }
+
+            public float CurrentValue { get => _data.f_currentValue; set => _data.f_currentValue = value; }
+
+            ~VitalDataDb()
+            {
+                RemoveListeners();
+            }
+
+            protected override void RemoveListeners()
+            {
+                base.RemoveListeners();
+                _data.Meta.RemoveEntityUpdatedListener(_data.Id,OnVitaChanged);
+            }
+
+            public void OnVitaChanged(object sender,BGEventArgsEntityUpdated args)
+            {
+                if (args.FieldId == _data.Meta.GetFieldId("currentValue"))
+                {
+                    ValueChanged();
                 }
             }
         }

@@ -1,26 +1,27 @@
-﻿using Item;
+﻿using BansheeGz.BGDatabase;
+using Item;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace InventorySystem
 {
-    public class FilterableInventory : Inventory
+    public class FilterableInventory : Inventory, IPartyStash
     {
         public FilterableInventory(List<E_InventorySlot> dbSlots) : base(dbSlots)
         {
             _filteredInventory = Slots.ToList();
         }
 
-        public event Action<FilterableInventory> OnBeforeFilter;
-        public event Action<FilterableInventory> OnAfterFilter;
+        public event Action<IPartyStash> OnBeforeFilter;
+        public event Action<IPartyStash> OnAfterFilter;
 
         private List<Slot> _filteredInventory;
         public List<ISlotData> FilteredInventory => _filteredInventory.Select(slot => (ISlotData)slot.Peek()).ToList();
 
-        public string nameFilter = "";
-        public List<string> typeFilter = new List<string>();
-        public bool IsFiltered => !String.IsNullOrEmpty(nameFilter) || typeFilter.Count > 0;
+        private string nameFilter = "";
+        private List<string> typeFilter = new List<string>();
+        private bool IsFiltered => !String.IsNullOrEmpty(nameFilter) || typeFilter.Count > 0;
         public override ISlotData this[int index]
         {
             get
@@ -35,7 +36,6 @@ namespace InventorySystem
             if (IsFiltered) Filter();
             return output;
         }
-
         public override ISlotData Insert(ISlotData slot,int at)
         {
             if (IsFiltered)
@@ -54,7 +54,6 @@ namespace InventorySystem
             base.SortByType();
             Filter();
         }
-
         private void Filter()
         {
             OnBeforeFilter?.Invoke(this);
@@ -103,9 +102,9 @@ namespace InventorySystem
             typeFilter.Add(type);
             Filter();
         }
-        private void RemoveFilterByType(string type)
+        public void RemoveFilterByType(string type)
         {
-            if (type == String.Empty) return;
+            if (String.IsNullOrEmpty(type)) return;
             typeFilter.Remove(type);
             Filter();
         }
@@ -115,5 +114,17 @@ namespace InventorySystem
             typeFilter.Clear();
             Filter();
         }
+    }
+
+    public interface IPartyStash : IInventory
+    {
+        List<ISlotData> FilteredInventory { get; }
+        void FilterByName(string name);
+        public void FilterByType(string type);
+        void RemoveFilterByType(string type);
+        void RemoveFilters();
+
+        event Action<IPartyStash> OnBeforeFilter;
+        event Action<IPartyStash> OnAfterFilter;
     }
 }

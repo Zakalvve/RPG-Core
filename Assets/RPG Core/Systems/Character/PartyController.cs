@@ -22,14 +22,14 @@ namespace RPG.Core.Character
 
         #region Dependancies
         private Dictionary<string,PartyCharacterController> _partyMembers { get; set; } = new Dictionary<string,PartyCharacterController>();
-        private FilterableInventory _partyInventory;
+        private IPartyStash _partyInventory;
         private EventEmitter _emitter;
         private ISystemMessenger _messenger;
         #endregion
         
         #region Initialize
         [Inject]
-        private void Initialize(List<PartyCharacterController> startingMembers,FilterableInventory inventory,EventEmitter emitter,ISystemMessenger messenger)
+        private void Initialize(List<PartyCharacterController> startingMembers,IPartyStash inventory,EventEmitter emitter,ISystemMessenger messenger)
         {
             //party is singleton entity
             Entity = E_Party.GetEntity(0);

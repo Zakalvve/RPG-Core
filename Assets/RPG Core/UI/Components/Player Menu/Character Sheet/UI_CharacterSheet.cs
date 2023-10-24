@@ -24,18 +24,18 @@ namespace InventorySystem
         private string charPortraitRootName = "char-portrait";
 
         //Inventory
-        public IUI_ChangeableInventoryDisplay<Inventory> CharBag;
-        public IUI_ChangeableInventoryDisplay<FilterableInventory> PartyStash;
-        public IUI_ChangeableInventoryDisplay<EquipmentInventory> CharEquipment;
+        public IUI_ChangeableInventoryDisplay<IInventory> CharBag;
+        public IUI_ChangeableInventoryDisplay<IPartyStash> PartyStash;
+        public IUI_ChangeableInventoryDisplay<IEquipmentInventory> CharEquipment;
         
 
 
         [Inject]
         public void Initialize(
             UIDocument UI, 
-            IUI_ChangeableInventoryDisplay<Inventory> bagDisplay,
-            IUI_ChangeableInventoryDisplay<FilterableInventory> stashDisplay,
-            IUI_ChangeableInventoryDisplay<EquipmentInventory> equipmentDisplay,
+            IUI_ChangeableInventoryDisplay<IInventory> bagDisplay,
+            IUI_ChangeableInventoryDisplay<IPartyStash> stashDisplay,
+            IUI_ChangeableInventoryDisplay<IEquipmentInventory> equipmentDisplay,
             EventEmitter emitter
             )
         {
@@ -89,11 +89,11 @@ namespace InventorySystem
         {
             PartyStash.ChangeInventory(args.partyInventory);
         }
-        public void ChangeBag(Inventory inv)
+        public void ChangeBag(IInventory inv)
         {
             CharBag.ChangeInventory(inv);
         }
-        public void ChangeEquipment(EquipmentInventory inv)
+        public void ChangeEquipment(IEquipmentInventory inv)
         {
             CharEquipment.ChangeInventory(inv);
         }

@@ -11,11 +11,11 @@ namespace InventorySystem
     public class UI_ActionBar : MonoBehaviour
     {
         public string actionBarRootName = "action-bar-root";
-        public IUI_ChangeableInventoryDisplay<ActionBar> _actionBar;
+        public IUI_ChangeableInventoryDisplay<IActionBar> _actionBar;
         private EventEmitter _emitter;
 
         [Inject]
-        public void Initialize(IUI_ChangeableInventoryDisplay<ActionBar> actionBar, EventEmitter emitter)
+        public void Initialize(IUI_ChangeableInventoryDisplay<IActionBar> actionBar, EventEmitter emitter)
         {
             _actionBar = actionBar;
             _emitter = emitter;
@@ -26,14 +26,14 @@ namespace InventorySystem
         }
         private void OnDisable()
         {
-            _emitter.UnsubscribeFromAll();
+            _emitter.UnsubscribeFromAll(); 
         }
 
         public void ChangeCharacter(object sender,CharacterEventArgs args)
         {
             ChangeActionBar(args.character.ActionBar);
         }
-        public void ChangeActionBar(ActionBar inv)
+        public void ChangeActionBar(IActionBar inv)
         {
             _actionBar.ChangeInventory(inv);
         }

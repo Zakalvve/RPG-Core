@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using Zenject;
 
-public class PawnMovementController : MonoBehaviour
+public class CharacterMovementController : MonoBehaviour
 {
     private NavMeshAgent _agent;
 

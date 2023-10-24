@@ -4,13 +4,13 @@ using Zenject;
 
 namespace InventorySystem
 {
-    public class UI_EquipmentDisplay : UI_BaseChangeableInventoryDisplay<EquipmentInventory,string>
+    public class UI_EquipmentDisplay : UI_BaseChangeableInventoryDisplay<IEquipmentInventory,string>
     {
         protected Dictionary<string,UI_BaseInventorySlot> _equipmentSlots;
         protected IEquipmentConfig _equipConfig;
 
         [Inject]
-        public UI_EquipmentDisplay(UIDocument UI, string displayRoot,IUI_InventoryController<EquipmentInventory, string> controller, TooltipController tt,UI_GhostIcon ghostIcon,IEquipmentConfig equipConfig) : base(UI,displayRoot,controller, tt,ghostIcon) 
+        public UI_EquipmentDisplay(UIDocument UI, string displayRoot,IUI_InventoryController<IEquipmentInventory, string> controller, TooltipController tt,UI_GhostIcon ghostIcon,IEquipmentConfig equipConfig) : base(UI,displayRoot,controller, tt,ghostIcon) 
         {
             _equipConfig = equipConfig;
         }
@@ -77,7 +77,7 @@ namespace InventorySystem
             WeaponSet4.UnregisterCallback<ClickEvent,int>(OnChangeWeaponLoadOut);
         }
 
-        public override void ChangeInventory(EquipmentInventory inv)
+        public override void ChangeInventory(IEquipmentInventory inv)
         {
             if (IsLinked)
             {

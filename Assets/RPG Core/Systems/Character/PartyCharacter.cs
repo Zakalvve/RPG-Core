@@ -5,7 +5,6 @@ using BansheeGz.BGDatabase;
 using RPG.Core.Character.Attributes;
 using Zenject;
 using RPGCore.Item;
-using System;
 
 namespace RPG.Core.Character
 {
@@ -20,9 +19,9 @@ namespace RPG.Core.Character
         public AttributeSet Stats { get; private set; }
 
         //inventory
-        public Inventory Bags { get; private set; }
-        public ActionBar ActionBar { get; private set; }
-        public EquipmentInventory Equipment { get; private set; }
+        public IInventory Bags { get; private set; }
+        public IActionBar ActionBar { get; private set; }
+        public IEquipmentInventory Equipment { get; private set; }
         #endregion
 
         #region Effects
@@ -35,7 +34,7 @@ namespace RPG.Core.Character
 
         #region Initialize
         [Inject]
-        public void Initialize(AttributeSet statBlock,Inventory inventory,ActionBar actionBar,EquipmentInventory equipmentInventory,ISystemMessenger messenger)
+        public void Initialize(AttributeSet statBlock,IInventory inventory,IActionBar actionBar,IEquipmentInventory equipmentInventory,ISystemMessenger messenger)
         {
             Stats = statBlock;
             Bags = inventory;
@@ -56,7 +55,7 @@ namespace RPG.Core.Character
         }
         #endregion
 
-        #region IEquiContext
+        #region IEquipContext
         public void Equip(IEquipableItem<EquipmentTypes> item)
         {
             _messenger.ShowMessage($"Equipped: {item.f_name}",Color.green);

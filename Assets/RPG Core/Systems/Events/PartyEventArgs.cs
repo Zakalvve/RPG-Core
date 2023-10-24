@@ -8,9 +8,9 @@ namespace RPG.Core.Events
     {
         public ICharacterSelector focusedMember;
         public List<ICharacterData> partyMemberData;
-        public FilterableInventory partyInventory;
+        public IPartyStash partyInventory;
 
-        public PartyEventArgs(ICharacterSelector focused, List<ICharacterData> memberData,FilterableInventory inv)
+        public PartyEventArgs(ICharacterSelector focused, List<ICharacterData> memberData,IPartyStash inv)
         {
             focusedMember = focused;
             partyMemberData = memberData;

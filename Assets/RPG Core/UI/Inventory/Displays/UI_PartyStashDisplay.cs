@@ -10,10 +10,10 @@ using Zenject;
 
 namespace InventorySystem
 {
-    public class UI_PartyStashDisplay : UI_InventoryDisplay<FilterableInventory>
+    public class UI_PartyStashDisplay : UI_InventoryDisplay<IPartyStash>
     {
         [Inject]
-        public UI_PartyStashDisplay(UIDocument UI, string displayRoot,IUI_InventoryController<FilterableInventory,int> controller, TooltipController tt,UI_GhostIcon ghostIcon) : base(UI,displayRoot,controller, tt,ghostIcon) { }
+        public UI_PartyStashDisplay(UIDocument UI, string displayRoot,IUI_InventoryController<IPartyStash,int> controller, TooltipController tt,UI_GhostIcon ghostIcon) : base(UI,displayRoot,controller, tt,ghostIcon) { }
         protected override void InitialiseDisplay()
         {
             base.InitialiseDisplay();
@@ -57,7 +57,7 @@ namespace InventorySystem
         {
             _controller.Inventory.SortByType();
         }
-        public void Unbind(FilterableInventory inv)
+        public void Unbind(IPartyStash inv)
         {
             if (IsLinked)
             {
@@ -70,7 +70,7 @@ namespace InventorySystem
                 }
             }
         }
-        public void Bind(FilterableInventory inv)
+        public void Bind(IPartyStash inv)
         {
             for (int i = 0; i < inv.FilteredInventory.Count; i++)
             {
@@ -79,7 +79,7 @@ namespace InventorySystem
                 _slots[i].RegisterCallback<MouseLeaveEvent>(HandleMouseLeave);
             }
         }
-        public override void ChangeInventory(FilterableInventory inv)
+        public override void ChangeInventory(IPartyStash inv)
         {
             if (inv == _controller.Inventory) return;
             if (IsLinked)

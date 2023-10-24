@@ -3,10 +3,10 @@ using Zenject;
 
 namespace InventorySystem
 {
-    public class UI_ActionBarDisplay : UI_InventoryDisplay<ActionBar>
+    public class UI_ActionBarDisplay : UI_InventoryDisplay<IActionBar>
     {
         [Inject]
-        public UI_ActionBarDisplay(UIDocument UI, string displayRoot, IUI_InventoryController<ActionBar, int> controller, TooltipController tt,UI_GhostIcon ghostIcon) : base(UI,displayRoot,controller, tt,ghostIcon) { }
+        public UI_ActionBarDisplay(UIDocument UI, string displayRoot, IUI_InventoryController<IActionBar, int> controller, TooltipController tt,UI_GhostIcon ghostIcon) : base(UI,displayRoot,controller, tt,ghostIcon) { }
         protected override void InitialiseDisplay()
         {
             base.InitialiseDisplay();

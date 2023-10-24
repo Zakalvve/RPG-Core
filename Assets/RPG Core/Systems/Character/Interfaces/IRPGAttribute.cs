@@ -6,7 +6,7 @@ namespace RPG.Core.Character.Attributes
 {
     public interface IRPGAttribute : IBindableObject<IRPGAttribute>
     {
-        string Name { get; set; }
+        string Name { get; }
         string Type { get; }
         float Value { get; }
         float BaseValue { get; set; }

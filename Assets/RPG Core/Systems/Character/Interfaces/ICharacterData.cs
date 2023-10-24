@@ -10,8 +10,8 @@ namespace RPG.Core.Character
         string Name { get; }
         Sprite Portrait { get; }
         AttributeSet Stats { get; }
-        Inventory Bags { get; }
-        EquipmentInventory Equipment { get; }
-        ActionBar ActionBar { get; }
+        IInventory Bags { get; }
+        IEquipmentInventory Equipment { get; }
+        IActionBar ActionBar { get; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Item;
+using System.Collections.Generic;
 
 namespace InventorySystem
 {
@@ -12,5 +13,6 @@ namespace InventorySystem
         ISlotData Insert(ISlotData slot,int at);
         ISlotData Eject(int from,int stacksToRemove = int.MaxValue);
         int IndexOfFirst(TItem item);
+        IEnumerable<int> IndexOfAll(TItem item);
     }
 }

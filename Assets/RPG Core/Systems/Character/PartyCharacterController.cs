@@ -8,12 +8,12 @@ namespace RPG.Core.Character {
         private PartyCharacter _character;
         private ISystemMessenger _messenger;
         private MeshRenderer _renderer;
-        private PawnMovementController _moveController;
+        private CharacterMovementController _moveController;
         #endregion
 
         #region Initialize
         [Inject]
-        public void Initialize(PartyCharacter character, ISystemMessenger messenger,MeshRenderer renderer,PawnMovementController moveController)
+        public void Initialize(PartyCharacter character, ISystemMessenger messenger,MeshRenderer renderer,CharacterMovementController moveController)
         {
             _character = character;
             _messenger = messenger;

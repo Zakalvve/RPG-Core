@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace InventorySystem
 {
-    public class UI_ActionBarController : UI_InventoryController<ActionBar,IActionItem>, IUI_InventoryController<ActionBar,int>
+    public class UI_ActionBarController : UI_InventoryController<IActionBar,IActionItem>, IUI_InventoryController<IActionBar,int>
     {
         public UI_ActionBarController() : base() { }
         public UI_ActionBarController(ActionBar inventory) : base(inventory) { }

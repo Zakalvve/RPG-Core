@@ -1,6 +1,8 @@
 ﻿using Item;
+using RPGCore.Item;
 using System;
 using System.Collections.Generic;
+using UnityEditor;
 
 namespace InventorySystem
 {
@@ -131,6 +133,10 @@ namespace InventorySystem
                 ((TItem)lastEquip.Item).UnEquip(_context);
             }
             return lastEquip;
+        }
+        public ISlotData GetSlot(string slotName)
+        {
+            return this[slotName];
         }
     }
 }
